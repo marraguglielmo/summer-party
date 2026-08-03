@@ -38,6 +38,7 @@
 
   --maxw:860px;
   --pad:clamp(20px,5vw,56px);
+  --gap:clamp(12px,2.2vw,18px);      /* distanza fra le schede */
 
   --display:"Fraunces",Georgia,serif;
   /* secondario: alternative già provate → "DM Sans", "Archivo", "Chivo" */
@@ -206,7 +207,7 @@ main{position:relative;z-index:2}
 
 /* ---------- schede info ---------- */
 .grid{
-  display:grid;gap:clamp(12px,2.2vw,18px);
+  display:grid;gap:var(--gap);
   grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
 }
 .card{
@@ -230,6 +231,15 @@ main{position:relative;z-index:2}
 
 .blocco{padding-block:clamp(20px,3.4vw,34px)}
 .blocco:last-of-type{padding-bottom:clamp(60px,10vw,110px)}
+
+/* su mobile le schede si incolonnano: stessa distanza fra tutte,
+   dentro e fuori dalle sezioni */
+@media (max-width:700px){
+  .blocco{padding-block:0}
+  .blocco + .blocco{padding-top:var(--gap)}
+  .blocco:last-of-type{padding-bottom:clamp(60px,14vw,110px)}
+  .programma{padding-bottom:clamp(24px,6vw,40px)}
+}
 .blocco-lab{
   font-size:.82rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;text-indent:.28em;
   color:var(--ink-soft);margin:0 0 clamp(16px,2.6vw,22px);

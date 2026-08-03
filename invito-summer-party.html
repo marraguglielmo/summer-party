@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#93ad57">
+<title>Summer Party — 7 agosto, Cece's Garden</title>
+<meta name="description" content="Invito: Summer Party, venerdì 7 agosto, Cece's Garden — Tricase. Start ore 22:00, karaoke a mezzanotte, bagno all'alba.">
+<meta property="og:title" content="Summer Party — Special Night">
+<meta property="og:description" content="Venerdì 7 agosto · Cece's Garden · Tricase. Dalle 22:00 fino al bagno all'alba.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,700..900,100,1&family=Outfit:wght@300..700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   SUMMER PARTY — invito digitale (solo informativo)
+   Il cielo cambia con lo scroll: pomeriggio → tramonto →
+   notte → alba, seguendo gli orari reali della serata.
+   ========================================================= */
+
+:root{
+  --sky:#93ad57;
+  --mid:#e0a95f;
+  --ground:#df8a3c;
+
+  --ink:#ffffff;
+  --ink-soft:rgba(255,255,255,.9);
+  --line:rgba(255,255,255,.55);
+  --velo:rgba(66,28,8,.16);          /* ombra morbida sotto al testo */
+  --palm:rgba(72,34,12,.5);
+
+  --maxw:860px;
+  --pad:clamp(20px,5vw,56px);
+
+  --display:"Fraunces",Georgia,serif;
+  /* secondario: alternative già provate → "DM Sans", "Archivo", "Chivo" */
+  --ui:"Outfit","Helvetica Neue",Arial,sans-serif;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:var(--ui);
+  color:var(--ink);
+  text-shadow:0 1px 14px var(--velo);
+  background:#e9b26a;
+  overflow-x:hidden;
+  text-align:center;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- fondali ---------- */
+.bg,.bg-blobs,.grain,.palms{position:fixed;inset:0;pointer-events:none;z-index:0}
+.bg{
+  background:linear-gradient(175deg,var(--sky) 0%,var(--mid) 52%,var(--ground) 100%);
+  transition:background 900ms linear;
+}
+.bg-blobs{
+  opacity:.5;
+  mix-blend-mode:soft-light;
+  background:
+    radial-gradient(38vw 34vw at 82% 12%,#ff9d2e 0%,transparent 62%),
+    radial-gradient(44vw 40vw at 14% 44%,#7fd0b0 0%,transparent 60%),
+    radial-gradient(40vw 46vw at 68% 74%,#e15fa0 0%,transparent 62%);
+  animation:drift 30s ease-in-out infinite alternate;
+}
+@keyframes drift{
+  from{transform:translate3d(-3%,-2%,0) scale(1)}
+  to{transform:translate3d(4%,3%,0) scale(1.12)}
+}
+.grain{
+  z-index:3;opacity:.19;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='.55'/></svg>");
+  background-size:220px 220px;
+}
+.palms{z-index:1;mix-blend-mode:multiply}
+.palms svg{position:absolute;bottom:-2vh;color:var(--palm);transition:color 900ms linear}
+.palms .p-left{left:-7vw;width:min(42vw,380px)}
+.palms .p-right{right:-5vw;width:min(48vw,430px);transform:scaleX(-1)}
+@media (max-width:700px){
+  .palms .p-left{width:56vw;left:-16vw}
+  .palms .p-right{width:60vw;right:-18vw}
+}
+
+/* ---------- impaginato ---------- */
+main{position:relative;z-index:2}
+.wrap{
+  max-width:var(--maxw);margin:0 auto;
+  padding-left:max(var(--pad),env(safe-area-inset-left));
+  padding-right:max(var(--pad),env(safe-area-inset-right));
+}
+
+.eyebrow{
+  font-weight:600;
+  text-transform:uppercase;letter-spacing:.34em;text-indent:.34em;
+  font-size:clamp(.82rem,1.95vw,1.02rem);
+  margin:0 0 1rem;color:var(--ink);
+}
+
+/* ---------- apertura ---------- */
+.hero{padding-block:clamp(64px,13vh,130px) clamp(30px,5vh,52px)}
+
+.title{
+  font-family:var(--display);
+  font-weight:900;
+  font-variation-settings:"SOFT" 100,"WONK" 1,"opsz" 144;
+  font-size:clamp(3.4rem,17vw,11rem);
+  line-height:.84;letter-spacing:-.022em;text-transform:uppercase;
+  margin:0;
+  text-shadow:0 3px 38px rgba(78,34,8,.32);
+}
+.title .row{display:block;white-space:nowrap}
+.title .ch{
+  display:inline-block;
+  transform:translateY(1.05em) rotate(6deg);
+  opacity:0;
+  animation:letterIn .95s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes letterIn{to{transform:none;opacity:1}}
+
+/* data in evidenza, fra due filetti come sulla locandina */
+.date-band{
+  margin:clamp(26px,5vw,44px) auto clamp(20px,3.4vw,30px);
+  max-width:660px;
+  padding-block:clamp(14px,2.4vw,22px);
+  border-block:1px solid var(--line);
+  animation:fadeUp 1s .75s both;
+}
+.date{
+  font-family:var(--display);font-weight:900;
+  font-variation-settings:"SOFT" 100,"WONK" 1;
+  font-size:clamp(1.9rem,7vw,3.4rem);line-height:1;
+  text-transform:uppercase;letter-spacing:-.01em;margin:0;
+}
+.date-sub{
+  margin:.7rem 0 0;
+  font-size:clamp(.8rem,2vw,.98rem);font-weight:600;
+  text-transform:uppercase;letter-spacing:.3em;text-indent:.3em;color:var(--ink-soft);
+}
+
+/* ---------- countdown ---------- */
+.countdown{
+  display:flex;gap:clamp(14px,4vw,40px);justify-content:center;flex-wrap:wrap;
+  animation:fadeUp 1s .95s both;
+}
+.cd-unit{min-width:62px}
+.cd-num{
+  font-family:var(--display);font-weight:800;
+  font-variation-settings:"SOFT" 100,"WONK" 0;
+  font-size:clamp(1.8rem,5.4vw,3rem);line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.cd-num.tick{animation:tick .5s cubic-bezier(.3,.8,.3,1)}
+@keyframes tick{
+  0%{transform:translateY(-.32em);opacity:0;filter:blur(2px)}
+  100%{transform:none;opacity:1;filter:none}
+}
+.cd-lab{
+  font-size:.76rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.22em;text-indent:.22em;
+  color:var(--ink-soft);margin-top:.55rem;
+}
+.cd-live{
+  font-family:var(--display);font-weight:900;
+  font-size:clamp(1.3rem,4.6vw,2.1rem);text-transform:uppercase;margin:0;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ---------- programma ---------- */
+.programma{padding-block:clamp(34px,6vw,60px) clamp(20px,4vw,40px)}
+.step{
+  padding-block:clamp(18px,3vw,26px);
+  border-top:1px solid var(--line);
+  position:relative;
+}
+.step:first-child{border-top:0}
+.step-line{
+  display:flex;align-items:baseline;justify-content:center;gap:.75em;flex-wrap:wrap;
+}
+.step-ora{
+  font-family:var(--display);font-weight:800;
+  font-variation-settings:"SOFT" 100,"WONK" 0;
+  font-variant-numeric:tabular-nums;
+  font-size:clamp(1.15rem,3.4vw,1.7rem);line-height:1;
+  letter-spacing:.01em;
+}
+.step-nome{
+  font-family:var(--display);font-weight:900;
+  font-variation-settings:"SOFT" 100,"WONK" 1;
+  font-size:clamp(1.5rem,5.4vw,2.5rem);line-height:1;
+  text-transform:uppercase;letter-spacing:-.01em;
+}
+.step-nota{
+  margin:.55rem auto 0;max-width:44ch;
+  color:var(--ink-soft);line-height:1.6;font-size:clamp(1rem,2.2vw,1.08rem);
+}
+.step.past .step-line{opacity:.55}
+
+/* ---------- schede info ---------- */
+.grid{
+  display:grid;gap:clamp(12px,2.2vw,18px);
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+}
+.card{
+  border:1px solid var(--line);
+  padding:clamp(24px,3.6vw,34px);
+  background:rgba(60,26,8,.14);
+  display:flex;flex-direction:column;gap:.6rem;
+}
+.card-lab{
+  font-size:.78rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;text-indent:.24em;
+  color:var(--ink-soft);margin-bottom:.15rem;
+}
+.card-val{
+  font-family:var(--display);font-weight:900;
+  font-variation-settings:"SOFT" 100,"WONK" 1;
+  font-size:clamp(1.75rem,5.4vw,2.4rem);line-height:1;
+  text-transform:uppercase;letter-spacing:-.012em;
+}
+.card p{margin:0;color:var(--ink-soft);line-height:1.62;font-size:clamp(1rem,2.2vw,1.1rem);font-weight:400}
+.card a{color:var(--ink);text-underline-offset:4px}
+
+.blocco{padding-block:clamp(20px,3.4vw,34px)}
+.blocco:last-of-type{padding-bottom:clamp(60px,10vw,110px)}
+.blocco-lab{
+  font-size:.82rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;text-indent:.28em;
+  color:var(--ink-soft);margin:0 0 clamp(16px,2.6vw,22px);
+}
+.slot.draft{border-style:dashed}
+.contatto{grid-column:1/-1;align-items:center;text-align:center}
+.contatto .card-val a{
+  text-decoration:none;font-variant-numeric:tabular-nums;letter-spacing:.01em;
+  border-bottom:2px solid var(--line);padding-bottom:.06em;
+  transition:border-color .25s ease;
+}
+.contatto .card-val a:hover{border-color:var(--ink)}
+
+/* ---------- link mappa ---------- */
+.card .maplink{
+  align-self:center;margin-top:.75rem;
+  font-weight:600;
+  text-transform:uppercase;letter-spacing:.15em;font-size:.8rem;text-indent:.15em;
+  padding:1em 1.6em .9em;
+  border:1px solid var(--line);border-radius:99px;
+  color:var(--ink);text-decoration:none;
+  transition:background .25s ease,color .25s ease,border-color .25s ease;
+}
+.card .maplink:hover{background:var(--ink);color:#6b3a18;border-color:var(--ink)}
+
+/* ---------- comparse ---------- */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+/* i filetti si disegnano da sinistra a destra quando entrano */
+.step{--rule:0}
+.step::before{
+  content:"";position:absolute;top:-1px;left:0;right:0;height:1px;background:var(--ink);
+  transform:scaleX(var(--rule));transform-origin:left;
+  transition:transform .9s cubic-bezier(.2,.7,.2,1);
+}
+.step:first-child::before{display:none}
+.step.in{--rule:1}
+
+:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
+/* ---------- la scena: astri, orizzonte, lucine ---------- */
+.scena{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orizzonte{position:absolute;inset:0;width:100%;height:100%}
+.stelle{opacity:var(--notte,0)}
+.cielo-notte{opacity:var(--notte,0)}
+
+.astro{
+  position:absolute;border-radius:50%;
+  transform:translate(-50%,-50%);
+  will-change:transform,opacity;
+}
+
+/* uccelli in planata */
+.uccello{position:absolute;width:clamp(22px,3vw,38px);opacity:.75;will-change:transform}
+.u1{top:22%;animation:plana1 42s linear infinite}
+.u2{top:29%;animation:plana2 58s linear infinite;animation-delay:-12s;transform:scale(.75)}
+.u3{top:17%;animation:plana1 66s linear infinite;animation-delay:-30s;transform:scale(.6)}
+@keyframes plana1{
+  from{transform:translateX(-12vw) translateY(0)}
+  50%{transform:translateX(50vw) translateY(-3vh)}
+  to{transform:translateX(112vw) translateY(1vh)}
+}
+@keyframes plana2{
+  from{transform:translateX(112vw) scale(.75)}
+  to{transform:translateX(-14vw) scale(.75)}
+}
+
+/* nuvole */
+.nuvole{animation:passa 90s linear infinite alternate}
+@keyframes passa{from{transform:translateX(-6px)}to{transform:translateX(10px)}}
+.sole{
+  width:min(30vmin,260px);aspect-ratio:1;
+  background:radial-gradient(circle,#fff6d4 0 30%,#ffd25f 48%,rgba(255,164,64,.5) 66%,rgba(255,150,60,0) 76%);
+  filter:blur(.4px);
+}
+.luna{
+  width:min(15vmin,130px);aspect-ratio:1;
+  background:radial-gradient(circle at 38% 36%,#fffdf3 0 42%,#efe6cf 62%,rgba(240,232,210,.25) 74%,transparent 80%);
+  box-shadow:0 0 60px 12px rgba(235,228,205,.28);
+}
+
+/* lucine da giardino appese sopra alla festa */
+.lucine{position:fixed;top:0;left:0;width:100%;height:170px;z-index:1;pointer-events:none}
+.lucine .filo{stroke:rgba(40,18,6,.45);stroke-width:2;fill:none}
+.lucine .bulbo{transform-box:fill-box;transform-origin:center;animation:brilla 3.4s ease-in-out infinite}
+@keyframes brilla{0%,100%{opacity:.85}50%{opacity:1}}
+
+/* velatura ai bordi: cresce di notte, tiene su il contrasto del testo */
+.vignetta{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(125% 85% at 50% 38%,transparent 42%,rgba(24,8,32,.55) 100%);
+  opacity:calc(.2 + var(--notte,0) * .6);
+  transition:opacity .9s linear;
+}
+
+/* stella cadente */
+.cometa{
+  position:fixed;z-index:1;pointer-events:none;
+  width:2px;height:2px;border-radius:50%;background:#fff;
+  box-shadow:0 0 6px 2px rgba(255,255,255,.8);
+  animation:cade var(--dur) linear forwards;
+}
+.cometa::after{
+  content:"";position:absolute;right:0;top:0;
+  width:120px;height:1.5px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.85));
+  transform:translateX(-100%) rotate(0deg);
+}
+@keyframes cade{
+  0%{opacity:0;transform:translate(0,0) rotate(18deg)}
+  12%{opacity:1}
+  100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(18deg)}
+}
+
+/* ---------- il caos ---------- */
+.caos{position:fixed;inset:0;pointer-events:none;overflow:hidden;contain:strict}
+#caosDietro{z-index:1}
+#caosDavanti{z-index:4}
+#caosDavanti .volo{filter:blur(.6px)}
+
+.volo{
+  position:absolute;top:0;left:0;will-change:transform,opacity;
+  animation:volo-x var(--dur) linear forwards, sfuma var(--dur) linear forwards;
+}
+.salto{animation:volo-y var(--dur) forwards}
+.giro{animation:gira var(--dur) linear forwards}
+.giro svg{display:block;width:var(--w);height:auto}
+
+@keyframes volo-x{
+  from{transform:translateX(var(--x0))}
+  to{transform:translateX(var(--x1))}
+}
+@keyframes volo-y{
+  0%  {transform:translateY(var(--y0));animation-timing-function:cubic-bezier(.15,.7,.5,1)}
+  42% {transform:translateY(var(--yTop));animation-timing-function:cubic-bezier(.5,0,.85,.4)}
+  100%{transform:translateY(var(--y1))}
+}
+@keyframes gira{
+  from{transform:rotate(var(--r0))}
+  to{transform:rotate(var(--r1))}
+}
+@keyframes sfuma{
+  0%{opacity:0} 10%{opacity:var(--o)} 82%{opacity:var(--o)} 100%{opacity:0}
+}
+
+/* spruzzi d'alcol che sbucano dai bordi */
+.spruzzo{
+  position:absolute;will-change:transform,opacity;
+  animation:spruzza var(--dur) cubic-bezier(.16,.9,.3,1) forwards;
+}
+.spruzzo svg{display:block;width:var(--w);height:auto}
+@keyframes spruzza{
+  0%{opacity:0;transform:rotate(var(--rot)) scale(.2)}
+  22%{opacity:.9;transform:rotate(var(--rot)) scale(1.06)}
+  100%{opacity:0;transform:rotate(var(--rot)) scale(1.3) translateY(-14px)}
+}
+
+@media (max-width:520px){
+  .title{font-size:min(17.5vw,4.6rem)}          /* mai più largo del viewport */
+  .hero{padding-top:clamp(48px,9vh,80px)}
+  .countdown{gap:12px}
+  .cd-unit{min-width:56px}
+  .step-line{gap:.4em}
+  .card{padding:22px 20px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none}
+  .title .ch{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="bg" id="bg"></div>
+<div class="bg-blobs"></div>
+
+<!-- ====== la scena: sole, luna, stelle, nuvole ====== -->
+<div class="scena" aria-hidden="true">
+
+  <svg class="orizzonte" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="gNotte" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0b0522" stop-opacity=".5"/>
+        <stop offset="1" stop-color="#0b0522" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+
+    <!-- alone notturno in alto -->
+    <rect class="cielo-notte" x="0" y="0" width="100" height="46" fill="url(#gNotte)"/>
+
+    <!-- stelle: si accendono quando il cielo va sul viola -->
+    <g class="stelle" fill="#fff">
+      <circle cx="8"  cy="9"  r=".22"/><circle cx="16" cy="21" r=".16"/><circle cx="23" cy="6"  r=".2"/>
+      <circle cx="31" cy="15" r=".14"/><circle cx="38" cy="27" r=".2"/> <circle cx="44" cy="8"  r=".16"/>
+      <circle cx="52" cy="19" r=".24"/><circle cx="58" cy="4"  r=".14"/><circle cx="65" cy="24" r=".18"/>
+      <circle cx="71" cy="12" r=".22"/><circle cx="78" cy="30" r=".14"/><circle cx="84" cy="7"  r=".2"/>
+      <circle cx="91" cy="18" r=".16"/><circle cx="96" cy="33" r=".2"/> <circle cx="12" cy="34" r=".16"/>
+      <circle cx="27" cy="38" r=".14"/><circle cx="47" cy="35" r=".18"/><circle cx="61" cy="40" r=".14"/>
+      <circle cx="88" cy="42" r=".16"/><circle cx="35" cy="45" r=".12"/>
+    </g>
+
+    <!-- nuvole basse che scivolano -->
+    <g class="nuvole" fill="#fff" opacity=".2">
+      <ellipse cx="20" cy="24" rx="11" ry="1.8"/>
+      <ellipse cx="26" cy="22" rx="6"  ry="1.3"/>
+      <ellipse cx="68" cy="17" rx="13" ry="1.6"/>
+      <ellipse cx="74" cy="15" rx="7"  ry="1.1"/>
+      <ellipse cx="45" cy="31" rx="9"  ry="1.2"/>
+    </g>
+
+  </svg>
+
+  <!-- uccelli che planano in lontananza -->
+  <svg class="uccello u1" viewBox="0 0 40 14"><path d="M2 10c6 0 8-7 12-7s6 7 12 7c4 0 8-3 12-6" fill="none" stroke="rgba(50,24,10,.5)" stroke-width="1.6" stroke-linecap="round"/></svg>
+  <svg class="uccello u2" viewBox="0 0 40 14"><path d="M2 10c6 0 8-7 12-7s6 7 12 7c4 0 8-3 12-6" fill="none" stroke="rgba(50,24,10,.42)" stroke-width="1.6" stroke-linecap="round"/></svg>
+  <svg class="uccello u3" viewBox="0 0 40 14"><path d="M2 10c6 0 8-7 12-7s6 7 12 7c4 0 8-3 12-6" fill="none" stroke="rgba(50,24,10,.34)" stroke-width="1.6" stroke-linecap="round"/></svg>
+
+  <div class="astro sole" id="sole"></div>
+  <div class="astro luna" id="luna"></div>
+</div>
+
+<svg class="lucine" id="lucine" aria-hidden="true"></svg>
+<div class="vignetta" aria-hidden="true"></div>
+
+<div class="palms" aria-hidden="true">
+  <svg class="p-left"  viewBox="0 0 200 330" fill="currentColor"><use href="#palma"/></svg>
+  <svg class="p-right" viewBox="0 0 200 330" fill="currentColor"><use href="#palma"/></svg>
+</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="palma" viewBox="0 0 200 330">
+    <path d="M92 330 C 86 262, 84 196, 90 126 L 108 126 C 104 196, 106 262, 114 330 Z"/>
+    <g transform="translate(99,124)">
+      <g transform="rotate(-8) scale(.98)"><path d="M0 0 C 30 -20, 68 -32, 110 -28 C 84 -20, 58 -16, 38 -10 C 60 -10, 82 -6, 102 2 C 72 0, 42 6, 22 14 C 15 9, 7 4, 0 0 Z"/></g>
+      <g transform="rotate(-42) scale(.92)"><path d="M0 0 C 30 -20, 68 -32, 110 -28 C 84 -20, 58 -16, 38 -10 C 60 -10, 82 -6, 102 2 C 72 0, 42 6, 22 14 C 15 9, 7 4, 0 0 Z"/></g>
+      <g transform="rotate(-76) scale(.86)"><path d="M0 0 C 30 -20, 68 -32, 110 -28 C 84 -20, 58 -16, 38 -10 C 60 -10, 82 -6, 102 2 C 72 0, 42 6, 22 14 C 15 9, 7 4, 0 0 Z"/></g>
+      <g transform="rotate(-108) scale(.9)"><path d="M0 0 C 30 -20, 68 -32, 110 -28 C 84 -20, 58 -16, 38 -10 C 60 -10, 82 -6, 102 2 C 72 0, 42 6, 22 14 C 15 9, 7 4, 0 0 Z"/></g>
+      <g transform="rotate(-142) scale(.95)"><path d="M0 0 C 30 -20, 68 -32, 110 -28 C 84 -20, 58 -16, 38 -10 C 60 -10, 82 -6, 102 2 C 72 0, 42 6, 22 14 C 15 9, 7 4, 0 0 Z"/></g>
+      <g transform="rotate(-172) scale(.88)"><path d="M0 0 C 30 -20, 68 -32, 110 -28 C 84 -20, 58 -16, 38 -10 C 60 -10, 82 -6, 102 2 C 72 0, 42 6, 22 14 C 15 9, 7 4, 0 0 Z"/></g>
+      <g transform="rotate(26) scale(.8)"><path d="M0 0 C 30 -20, 68 -32, 110 -28 C 84 -20, 58 -16, 38 -10 C 60 -10, 82 -6, 102 2 C 72 0, 42 6, 22 14 C 15 9, 7 4, 0 0 Z"/></g>
+      <g transform="rotate(-200) scale(.78)"><path d="M0 0 C 30 -20, 68 -32, 110 -28 C 84 -20, 58 -16, 38 -10 C 60 -10, 82 -6, 102 2 C 72 0, 42 6, 22 14 C 15 9, 7 4, 0 0 Z"/></g>
+      <circle r="7"/>
+    </g>
+  </symbol>
+
+  <!-- ====== il caos: oggetti che volano ====== -->
+  <symbol id="ob-bottiglia" viewBox="0 0 44 122">
+    <path d="M16 8h12v16c0 7 8 11 8 24v58a8 8 0 0 1-8 8H16a8 8 0 0 1-8-8V48c0-13 8-17 8-24V8Z" fill="#2f6b46"/>
+    <path d="M15 2h14v8H15z" fill="#c9452f"/>
+    <path d="M8 88h28v18a8 8 0 0 1-8 8H16a8 8 0 0 1-8-8Z" fill="#1c4a2e"/>
+    <rect x="8" y="58" width="28" height="24" fill="#f4e7c9"/>
+    <rect x="12" y="66" width="20" height="3" fill="#c9452f"/>
+    <rect x="12" y="73" width="14" height="3" fill="#c9452f"/>
+  </symbol>
+
+  <symbol id="ob-spritz" viewBox="0 0 62 98">
+    <path d="M10 12h42l-5 26a16 16 0 0 1-32 0Z" fill="rgba(255,255,255,.45)"/>
+    <path d="M14 22h34l-4 15a13 13 0 0 1-26 0Z" fill="#f2792b"/>
+    <rect x="29" y="48" width="4" height="28" rx="2" fill="rgba(255,255,255,.55)"/>
+    <rect x="16" y="76" width="30" height="5" rx="2.5" fill="rgba(255,255,255,.55)"/>
+    <path d="M47 4 36 28" stroke="#fff" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <circle cx="47" cy="22" r="8" fill="#ffb03a"/>
+    <path d="M47 14a8 8 0 0 0 0 16Z" fill="#ffd07a"/>
+  </symbol>
+
+  <symbol id="ob-sedia" viewBox="0 0 86 96">
+    <path d="M20 4h46a5 5 0 0 1 5 5v30a5 5 0 0 1-5 5H20a5 5 0 0 1-5-5V9a5 5 0 0 1 5-5Z" fill="rgba(255,255,255,.9)"/>
+    <rect x="26" y="14" width="34" height="4" rx="2" fill="rgba(120,70,30,.25)"/>
+    <rect x="26" y="24" width="34" height="4" rx="2" fill="rgba(120,70,30,.25)"/>
+    <path d="M6 46h74a4 4 0 0 1 3 6l-5 8H8l-5-8a4 4 0 0 1 3-6Z" fill="rgba(255,255,255,.92)"/>
+    <path d="M12 60h7l5 34h-7zM74 60h-7l-5 34h7z" fill="rgba(255,255,255,.85)"/>
+    <path d="M26 60h6l3 26h-6zM60 60h-6l-3 26h6z" fill="rgba(255,255,255,.6)"/>
+  </symbol>
+
+  <symbol id="ob-lattina" viewBox="0 0 40 74">
+    <rect x="4" y="4" width="32" height="66" rx="6" fill="rgba(255,255,255,.9)"/>
+    <rect x="4" y="26" width="32" height="16" fill="#e04a6a"/>
+    <rect x="4" y="46" width="32" height="5" fill="#3a3a55" opacity=".5"/>
+    <ellipse cx="20" cy="6" rx="14" ry="4" fill="rgba(200,200,200,.9)"/>
+  </symbol>
+
+  <symbol id="ob-ghiaccio" viewBox="0 0 40 40">
+    <rect x="3" y="3" width="34" height="34" rx="8" fill="rgba(255,255,255,.6)"/>
+    <path d="M11 11h9v9h-9z" fill="rgba(255,255,255,.9)"/>
+  </symbol>
+
+  <symbol id="ob-arancia" viewBox="0 0 48 26">
+    <path d="M0 26a24 24 0 0 1 48 0Z" fill="#ffb03a"/>
+    <path d="M5 24a19 19 0 0 1 38 0Z" fill="#ff8c1a"/>
+    <path d="M24 24V7M24 24 10 15M24 24l14-9" stroke="#ffd07a" stroke-width="2"/>
+  </symbol>
+
+  <symbol id="ob-goccia" viewBox="0 0 26 38">
+    <path d="M13 0C5 13 0 20 0 26a13 13 0 0 0 26 0c0-6-5-13-13-26Z" fill="#f2792b"/>
+    <path d="M8 24a5 5 0 0 1 5-5" stroke="rgba(255,255,255,.7)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="ob-schizzo" viewBox="0 0 120 90">
+    <path d="M8 62c14-26 34-40 58-40 18 0 30 6 44 18-8-2-16 0-22 6 6 8 6 16 2 24-6-8-14-12-22-10 2 10-2 18-10 22-2-10-8-16-16-16-10 0-20 6-34-4Z" fill="#f2792b" opacity=".85"/>
+    <circle cx="98" cy="16" r="6" fill="#f2792b" opacity=".8"/>
+    <circle cx="112" cy="44" r="4" fill="#f2792b" opacity=".7"/>
+    <circle cx="26" cy="24" r="5" fill="#f2792b" opacity=".7"/>
+  </symbol>
+</svg>
+
+<div class="caos" id="caosDietro" aria-hidden="true"></div>
+<div class="caos" id="caosDavanti" aria-hidden="true"></div>
+
+<div class="grain" aria-hidden="true"></div>
+
+<main>
+
+  <!-- ============ APERTURA ============ -->
+  <header class="hero wrap">
+    <p class="eyebrow" id="hEyebrow"></p>
+    <h1 class="title" id="hTitle"></h1>
+
+    <div class="date-band">
+      <p class="date" id="hData"></p>
+      <p class="date-sub" id="hSub"></p>
+    </div>
+
+    <div class="countdown" id="countdown" aria-live="polite"></div>
+  </header>
+
+  <!-- ============ PROGRAMMA ============ -->
+  <section class="programma wrap" id="programma"></section>
+
+  <!-- ============ INFO ============ -->
+  <section class="blocco wrap">
+    <p class="blocco-lab rv">Dove</p>
+    <div class="grid rv" id="infoGrid"></div>
+  </section>
+
+  <!-- ============ CONTATTO ============ -->
+  <section class="blocco wrap">
+    <div class="grid rv" id="contattoGrid"></div>
+  </section>
+
+  <!-- ============ DUE SPAZI LIBERI ============ -->
+  <section class="blocco wrap">
+    <div class="grid rv" id="extraGrid"></div>
+  </section>
+
+</main>
+
+<script>
+/* =========================================================
+   1. CONFIG — tutto il contenuto sta qui.
+      Cambi questo oggetto e la pagina si aggiorna da sola.
+   ========================================================= */
+const CONFIG = {
+  eyebrow: "Special Night",
+  titolo1: "Summer",
+  titolo2: "Party",
+
+  inizioISO: "2026-08-07T22:00:00+02:00",
+  fineISO:   "2026-08-08T07:00:00+02:00",
+
+  dataLabel: "Venerdì 7 agosto",
+  dataSub:   "dalle 22:00 fino all'alba",
+
+  luogo:     "Cece's Garden",
+  indirizzo: "Via Sigismondo Castromediano 5, Tricase",
+  mappaUrl:  "https://maps.app.goo.gl/Lffu8ddPQrijHCUL6",
+  dressCode: "Casual",
+  telefonoInfo: "3489722023",
+  dressNota: "Scarpe comode: a un certo punto si finisce sulla sabbia.",
+
+  programma: [
+    { ora:"22:00", nome:"Start \u00b7 Food" },
+    { ora:"23:00", nome:"Giochi alcolici" },
+    { ora:"00:00", nome:"Karaoke" },
+    { ora:"05:00", nome:"Bagno all'alba" }
+  ],
+
+  /* Blocchi extra: array vuoto = la sezione non compare.
+     Per aggiungerne uno:
+     { etichetta:"Info", titolo:"Titolo", testo:"Testo", ctaLabel:"", ctaUrl:"" } */
+  extra: [],
+
+  /* --- IL CAOS ---
+     attivo:false spegne tutto. Alza intensita per averne di più. */
+  caos: {
+    attivo: true,
+    intensita: 1,        // 1 = normale, 1.6 = festa fuori controllo, .5 = discreto
+    maxOggetti: 16,      // limite di roba in volo insieme
+    alTocco: true        // toccando lo schermo parte un getto di oggetti
+  }
+};
+
+/* =========================================================
+   2. Utility
+   ========================================================= */
+const $ = (s, r = document) => r.querySelector(s);
+const inizio = new Date(CONFIG.inizioISO);
+const fine   = new Date(CONFIG.fineISO);
+const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const menoMoto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* =========================================================
+   3. Apertura — titolo lettera per lettera, poi data e countdown
+   ========================================================= */
+$("#hEyebrow").textContent = CONFIG.eyebrow;
+$("#hData").textContent = CONFIG.dataLabel;
+$("#hSub").textContent = CONFIG.dataSub;
+document.title = `${CONFIG.titolo1} ${CONFIG.titolo2} — ${CONFIG.dataLabel}, ${CONFIG.luogo}`;
+
+$("#hTitle").innerHTML = [CONFIG.titolo1, CONFIG.titolo2].map((riga, r) => {
+  const lettere = [...riga].map((ch, i) =>
+    `<span class="ch" style="animation-delay:${(r * 0.24 + i * 0.045 + 0.1).toFixed(3)}s">${esc(ch)}</span>`
+  ).join("");
+  return `<span class="row">${lettere}</span>`;
+}).join("");
+
+/* =========================================================
+   4. Countdown — le cifre che cambiano scendono al loro posto
+   ========================================================= */
+const cdEl = $("#countdown");
+const UNITA = ["giorni","ore","minuti","secondi"];
+let precedenti = null;
+
+function valori(){
+  const s = Math.floor((inizio - new Date()) / 1000);
+  return [Math.floor(s/86400), Math.floor(s/3600)%24, Math.floor(s/60)%60, s%60];
+}
+
+function renderCountdown(){
+  const ora = new Date();
+  if (inizio - ora <= 0){
+    cdEl.innerHTML = `<p class="cd-live">${ora > fine ? "È stata una gran notte" : "La festa è iniziata"}</p>`;
+    precedenti = null;
+    return;
+  }
+  const v = valori();
+  if (!precedenti){
+    cdEl.innerHTML = v.map((n, i) => `
+      <div class="cd-unit">
+        <div class="cd-num" data-i="${i}">${String(n).padStart(2,"0")}</div>
+        <div class="cd-lab">${UNITA[i]}</div>
+      </div>`).join("");
+  } else {
+    v.forEach((n, i) => {
+      if (n === precedenti[i]) return;
+      const el = cdEl.querySelector(`.cd-num[data-i="${i}"]`);
+      el.textContent = String(n).padStart(2,"0");
+      if (!menoMoto){ el.classList.remove("tick"); void el.offsetWidth; el.classList.add("tick"); }
+    });
+  }
+  precedenti = v;
+}
+renderCountdown();
+setInterval(renderCountdown, 1000);
+
+/* =========================================================
+   5. Programma — con la tappa in corso evidenziata
+   ========================================================= */
+function orarioAssoluto(ora){
+  const [h, m] = ora.split(":").map(Number);
+  const d = new Date(inizio);
+  d.setHours(h, m, 0, 0);
+  if (d < inizio) d.setDate(d.getDate() + 1);   // dopo mezzanotte = giorno dopo
+  return d;
+}
+const tappe = CONFIG.programma.map(p => ({ ...p, quando: orarioAssoluto(p.ora) }));
+
+$("#programma").innerHTML = tappe.map(p => `
+  <div class="step rv">
+    <p class="step-line">
+      <span class="step-ora">${esc(p.ora)}</span>
+      <span class="step-nome">${esc(p.nome)}</span>
+    </p>
+    ${p.nota ? `<p class="step-nota">${esc(p.nota)}</p>` : ""}
+  </div>`).join("");
+
+// le tappe già passate durante la serata sbiadiscono
+function aggiornaFasi(){
+  const ora = new Date();
+  const attiva = tappe.reduce((acc, p, i) => (ora >= p.quando && ora <= fine ? i : acc), -1);
+  document.querySelectorAll(".step").forEach((el, i) => el.classList.toggle("past", i < attiva));
+}
+aggiornaFasi();
+setInterval(aggiornaFasi, 30000);
+
+/* =========================================================
+   6. Info + i due spazi liberi
+   ========================================================= */
+const linkMappa = CONFIG.mappaUrl ||
+  ("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.indirizzo));
+
+$("#infoGrid").innerHTML = `
+  <div class="card">
+    <span class="card-lab">Luogo</span>
+    <span class="card-val">${esc(CONFIG.luogo)}</span>
+    <p>${esc(CONFIG.indirizzo)}</p>
+    <a class="maplink" href="${linkMappa}" target="_blank" rel="noopener">Apri le indicazioni</a>
+  </div>
+  <div class="card">
+    <span class="card-lab">Dress code</span>
+    <span class="card-val">${esc(CONFIG.dressCode)}</span>
+    <p>${esc(CONFIG.dressNota)}</p>
+  </div>`;
+
+$("#contattoGrid").innerHTML = `
+  <div class="card contatto">
+    <span class="card-lab">Info</span>
+    <span class="card-val"><a href="tel:${esc(CONFIG.telefonoInfo)}">${esc(CONFIG.telefonoInfo)}</a></span>
+    <p>Per informazioni rivolgersi a questo numero.</p>
+  </div>`;
+
+const secExtra = $("#extraGrid").closest("section");
+if (!CONFIG.extra.length){
+  secExtra.remove();
+} else {
+  $("#extraGrid").innerHTML = CONFIG.extra.map(x => `
+    <div class="card slot ${x.bozza ? "draft" : ""}">
+      <span class="card-lab">${esc(x.etichetta)}</span>
+      <span class="card-val">${esc(x.titolo)}</span>
+      <p>${esc(x.testo)}</p>
+      ${x.ctaUrl ? `<p><a href="${esc(x.ctaUrl)}" target="_blank" rel="noopener">${esc(x.ctaLabel || "Apri")}</a></p>` : ""}
+    </div>`).join("");
+}
+
+/* =========================================================
+   7. Il cielo cambia con lo scroll — pomeriggio → alba
+   ========================================================= */
+const CIELI = [
+  { t:0.00, sky:"#93ad57", mid:"#e0a95f", ground:"#df8a3c", palm:"rgba(62,28,10,.55)" },
+  { t:0.36, sky:"#e08c3c", mid:"#d96a4d", ground:"#c0537c", palm:"rgba(72,22,18,.58)" },
+  { t:0.70, sky:"#7a4292", mid:"#4a2c78", ground:"#241a46", palm:"rgba(14,6,28,.62)"  },
+  { t:1.00, sky:"#e39a78", mid:"#dfae6b", ground:"#7f9bc4", palm:"rgba(54,32,22,.5)"  }
+];
+const hex = (h) => [1,3,5].map(i => parseInt(h.slice(i, i+2), 16));
+const lerp = (a, b, k) => Math.round(a + (b - a) * k);
+
+function aggiornaCielo(){
+  const max = document.body.scrollHeight - innerHeight;
+  const p = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+
+  let i = 0;
+  while (i < CIELI.length - 2 && p > CIELI[i+1].t) i++;
+  const a = CIELI[i], b = CIELI[i+1];
+  const k = (p - a.t) / (b.t - a.t);
+
+  ["sky","mid","ground"].forEach(key => {
+    const ca = hex(a[key]), cb = hex(b[key]);
+    document.documentElement.style.setProperty(`--${key}`, `rgb(${ca.map((v, j) => lerp(v, cb[j], k)).join(",")})`);
+  });
+  document.documentElement.style.setProperty("--palm", k < .5 ? a.palm : b.palm);
+  scena(p);
+}
+
+/* --- astri, notte e riflesso sul mare --- */
+const solePunti = [
+  { t:0.00, x:76, y:14, o:1 },
+  { t:0.30, x:64, y:40, o:1 },
+  { t:0.44, x:57, y:55, o:.9 },
+  { t:0.52, x:53, y:62, o:0 },
+  { t:0.84, x:30, y:70, o:0 },   // ricompare all'alba, dall'altra parte
+  { t:1.00, x:22, y:47, o:1 }
+];
+const lunaPunti = [
+  { t:0.46, x:24, y:66, o:0 },
+  { t:0.62, x:31, y:30, o:1 },
+  { t:0.82, x:42, y:18, o:.9 },
+  { t:0.95, x:52, y:26, o:0 }
+];
+const nottePunti = [
+  { t:0.00, v:0 }, { t:0.42, v:0 }, { t:0.70, v:1 }, { t:0.86, v:.45 }, { t:1.00, v:.05 }
+];
+
+const soleEl = $("#sole"), lunaEl = $("#luna");
+
+function interpola(punti, p, campi){
+  if (p <= punti[0].t) return punti[0];
+  if (p >= punti[punti.length-1].t) return punti[punti.length-1];
+  let i = 0; while (p > punti[i+1].t) i++;
+  const a = punti[i], b = punti[i+1];
+  const k = (p - a.t) / (b.t - a.t);
+  const out = {};
+  campi.forEach(c => out[c] = a[c] + (b[c] - a[c]) * k);
+  return out;
+}
+
+function piazza(el, punti, p){
+  const fuori = p < punti[0].t || p > punti[punti.length-1].t;
+  const v = interpola(punti, p, ["x","y","o"]);
+  el.style.left = v.x + "%";
+  el.style.top  = v.y + "%";
+  el.style.opacity = fuori ? 0 : v.o;
+  return v;
+}
+
+function scena(p){
+  piazza(soleEl, solePunti, p);
+  piazza(lunaEl, lunaPunti, p);
+
+  const notte = interpola(nottePunti, p, ["v"]).v;
+  document.documentElement.style.setProperty("--notte", notte.toFixed(3));
+}
+
+/* =========================================================
+   8. Comparse allo scroll
+   ========================================================= */
+const io = new IntersectionObserver((voci) => {
+  voci.forEach(v => { if (v.isIntersecting){ v.target.classList.add("in"); io.unobserve(v.target); } });
+}, { threshold:.18, rootMargin:"0px 0px -6% 0px" });
+
+document.querySelectorAll(".rv").forEach((el, i) => {
+  el.style.transitionDelay = Math.min(i * 55, 220) + "ms";
+  io.observe(el);
+});
+
+/* =========================================================
+   10. Lucine appese e stelle cadenti
+   ========================================================= */
+(function lucine(){
+  const svg = $("#lucine");
+  const COLORI = ["#ffd884","#ffb03a","#ff8a5c","#fff2cc"];
+
+  function disegna(){
+    const W = innerWidth, H = 170;
+    const campate = W < 620 ? 2 : 3;           // quante “pance” fa il filo
+    const larg = W / campate;
+    const cima = 8, pancia = W < 620 ? 62 : 74;
+
+    let filo = `M0 ${cima}`;
+    for (let i = 0; i < campate; i++){
+      filo += ` Q ${larg * (i + .5)} ${cima + pancia}, ${larg * (i + 1)} ${cima}`;
+    }
+
+    // punti sulla curva quadratica, per appendere i bulbi
+    const bulbi = [];
+    const perCampata = W < 620 ? 5 : 6;
+    for (let i = 0; i < campate; i++){
+      const x0 = larg * i, xc = larg * (i + .5), x1 = larg * (i + 1);
+      for (let j = 0; j <= perCampata; j++){
+        if (i > 0 && j === 0) continue;         // niente doppioni sui nodi
+        const t = j / perCampata;
+        const u = 1 - t;
+        const x = u*u*x0 + 2*u*t*xc + t*t*x1;
+        const y = u*u*cima + 2*u*t*(cima + pancia) + t*t*cima;
+        bulbi.push([x, y]);
+      }
+    }
+
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.setAttribute("preserveAspectRatio", "none");
+    svg.innerHTML = `
+      <path class="filo" d="${filo}"/>
+      ${bulbi.map(([x, y], i) => {
+        const c = COLORI[i % COLORI.length];
+        return `
+          <g class="bulbo" style="animation-delay:${(i * .27).toFixed(2)}s">
+            <line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x.toFixed(1)}" y2="${(y + 7).toFixed(1)}"
+                  stroke="rgba(40,18,6,.5)" stroke-width="1.4"/>
+            <circle cx="${x.toFixed(1)}" cy="${(y + 12).toFixed(1)}" r="5" fill="${c}"
+                    style="opacity:calc(.45 + var(--notte, 0) * .55);
+                           filter:drop-shadow(0 0 calc(3px + var(--notte,0) * 9px) ${c})"/>
+          </g>`;
+      }).join("")}`;
+  }
+
+  disegna();
+  let attesa;
+  addEventListener("resize", () => { clearTimeout(attesa); attesa = setTimeout(disegna, 220); });
+
+  // stelle cadenti: solo quando il cielo è abbastanza scuro
+  if (menoMoto) return;
+  setInterval(() => {
+    const notte = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--notte")) || 0;
+    if (notte < .55 || Math.random() > .5) return;
+    const c = document.createElement("div");
+    c.className = "cometa";
+    c.style.cssText = `
+      left:${(Math.random() * 70 + 10).toFixed(0)}%;
+      top:${(Math.random() * 26 + 4).toFixed(0)}%;
+      --dx:${(Math.random() * 220 + 180).toFixed(0)}px;
+      --dy:${(Math.random() * 90 + 60).toFixed(0)}px;
+      --dur:${(Math.random() * .5 + .8).toFixed(2)}s;`;
+    c.addEventListener("animationend", () => c.remove());
+    document.body.appendChild(c);
+  }, 5200);
+})();
+
+/* =========================================================
+   11. Il caos — bottiglie, sedie, spritz e alcol che vola
+   ========================================================= */
+(function caos(){
+  const C = CONFIG.caos || {};
+  if (!C.attivo || menoMoto) return;
+
+  const dietro  = $("#caosDietro");
+  const davanti = $("#caosDavanti");
+
+  // peso = quanto spesso esce quell'oggetto
+  const CATALOGO = [
+    { id:"ob-spritz",    vb:"0 0 62 98",  w:78, peso:5 },
+    { id:"ob-bottiglia", vb:"0 0 44 122", w:58, peso:5 },
+    { id:"ob-goccia",    vb:"0 0 26 38",  w:26, peso:4 },
+    { id:"ob-arancia",   vb:"0 0 48 26",  w:44, peso:3 },
+    { id:"ob-ghiaccio",  vb:"0 0 40 40",  w:30, peso:3 },
+    { id:"ob-lattina",   vb:"0 0 40 74",  w:42, peso:2 },
+    { id:"ob-sedia",     vb:"0 0 86 96",  w:96, peso:2 }
+  ];
+  const URNA = CATALOGO.flatMap(o => Array(o.peso).fill(o));
+  const caso = (a, b) => a + Math.random() * (b - a);
+  const pesca = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  function lancia(opz = {}){
+    const layer = Math.random() < .28 ? davanti : dietro;
+    if (dietro.childElementCount + davanti.childElementCount > (C.maxOggetti || 16)) return;
+
+    const o = opz.oggetto || pesca(URNA);
+    const W = innerWidth, H = innerHeight;
+    const versoDestra = opz.versoDestra ?? Math.random() < .5;
+    const scala = layer === davanti ? caso(1.1, 1.7) : caso(.55, 1.1);
+
+    const x0 = opz.x0 ?? (versoDestra ? -160 : W + 160);
+    const x1 = opz.x1 ?? (versoDestra ? W + 160 : -160);
+    const y0 = opz.y0 ?? caso(H * .15, H * .9);
+    const y1 = opz.y1 ?? H + 260;
+    const yTop = y0 - caso(90, 320);
+
+    const volo = document.createElement("div");
+    volo.className = "volo";
+    volo.style.cssText = `
+      --dur:${(opz.dur ?? caso(4.2, 8.5)).toFixed(2)}s;
+      --x0:${x0}px; --x1:${x1}px;
+      --o:${(layer === davanti ? caso(.38, .58) : caso(.7, 1)).toFixed(2)};`;
+
+    const salto = document.createElement("div");
+    salto.className = "salto";
+    salto.style.cssText = `--y0:${y0}px; --yTop:${yTop}px; --y1:${y1}px;`;
+
+    const giro = document.createElement("div");
+    giro.className = "giro";
+    giro.style.cssText = `--r0:${caso(-40, 40)}deg; --r1:${caso(-900, 900)}deg;`;
+    giro.innerHTML = `<svg viewBox="${o.vb}" style="--w:${Math.round(o.w * scala)}px"><use href="#${o.id}"/></svg>`;
+
+    salto.appendChild(giro);
+    volo.appendChild(salto);
+    volo.addEventListener("animationend", e => { if (e.animationName === "sfuma") volo.remove(); });
+    layer.appendChild(volo);
+  }
+
+  // spruzzi d'arancione che sbucano dai bordi
+  function spruzza(){
+    const el = document.createElement("div");
+    el.className = "spruzzo";
+    const daSinistra = Math.random() < .5;
+    const w = caso(140, 300);
+    el.style.cssText = `
+      --dur:${caso(1.1, 1.9).toFixed(2)}s;
+      --w:${Math.round(w)}px;
+      --rot:${caso(-30, 30) + (daSinistra ? 0 : 180)}deg;
+      ${daSinistra ? "left:-4%" : "right:-4%"};
+      top:${caso(8, 82)}%;
+      transform-origin:${daSinistra ? "left" : "right"} center;`;
+    el.innerHTML = `<svg viewBox="0 0 120 90" style="--w:${Math.round(w)}px"><use href="#ob-schizzo"/></svg>`;
+    el.addEventListener("animationend", () => el.remove());
+    (Math.random() < .5 ? dietro : davanti).appendChild(el);
+  }
+
+  const intensita = C.intensita || 1;
+  const ritmo = () => 1500 / intensita;
+
+  function ciclo(){
+    lancia();
+    if (Math.random() < .35) lancia();
+    setTimeout(ciclo, caso(ritmo() * .6, ritmo() * 1.6));
+  }
+  setTimeout(ciclo, 1200);
+  setInterval(() => { if (Math.random() < .55) spruzza(); }, 4200 / intensita);
+
+  // partenza: un po' di roba già in aria
+  for (let i = 0; i < 4; i++) setTimeout(lancia, 300 + i * 260);
+
+  // toccando lo schermo parte un getto
+  if (C.alTocco){
+    addEventListener("pointerdown", (e) => {
+      if (e.target.closest("a,button")) return;
+      const H = innerHeight;
+      for (let i = 0; i < 7; i++){
+        const destra = Math.random() < .5;
+        lancia({
+          x0: e.clientX, x1: e.clientX + caso(180, 620) * (destra ? 1 : -1),
+          y0: e.clientY, y1: H + 200,
+          dur: caso(1.6, 2.8)
+        });
+      }
+      spruzza();
+    }, { passive:true });
+  }
+})();
+</script>
+</body>
+</html>

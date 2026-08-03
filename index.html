@@ -312,10 +312,62 @@ main{position:relative;z-index:2}
 }
 
 /* lucine da giardino appese sopra alla festa */
-.lucine{position:fixed;top:0;left:0;width:100%;height:170px;z-index:1;pointer-events:none}
+.lucine{
+  position:fixed;top:0;left:0;width:100%;height:170px;z-index:1;pointer-events:none;
+  transform-origin:50% -40px;
+  animation:brezza 11s ease-in-out infinite alternate;
+}
+/* tutto il filo dondola piano, come mosso dal vento */
+@keyframes brezza{
+  from{transform:rotate(-.5deg) translateY(-2px)}
+  to  {transform:rotate(.5deg)  translateY(3px)}
+}
 .lucine .filo{stroke:rgba(40,18,6,.45);stroke-width:2;fill:none}
-.lucine .bulbo{transform-box:fill-box;transform-origin:center;animation:brilla 3.4s ease-in-out infinite}
-@keyframes brilla{0%,100%{opacity:.85}50%{opacity:1}}
+
+/* ogni bulbo pendola attorno al suo punto di aggancio */
+.lucine .bulbo{
+  transform-box:view-box;
+  animation:pendola var(--sw,5s) ease-in-out var(--d,0s) infinite alternate;
+}
+@keyframes pendola{
+  from{transform:rotate(calc(var(--sw-a,4deg) * -1))}
+  to  {transform:rotate(var(--sw-a,4deg))}
+}
+
+/* il vetro respira: opacità e alone crescono e calano */
+.lucine .vetro{
+  fill:var(--c);
+  animation:brilla var(--tw,3.4s) ease-in-out var(--d,0s) infinite;
+}
+@keyframes brilla{
+  0%,100%{
+    opacity:calc(.30 + var(--notte,0) * .40);
+    filter:drop-shadow(0 0 calc(2px + var(--notte,0) * 5px) var(--c));
+  }
+  45%{
+    opacity:calc(.58 + var(--notte,0) * .42);
+    filter:drop-shadow(0 0 calc(5px + var(--notte,0) * 15px) var(--c));
+  }
+}
+
+/* alone morbido dietro al vetro */
+.lucine .alone{
+  fill:var(--c);
+  filter:blur(5px);
+  animation:alone var(--tw,3.4s) ease-in-out var(--d,0s) infinite;
+}
+@keyframes alone{
+  0%,100%{opacity:calc(.06 + var(--notte,0) * .16);transform:scale(.85)}
+  45%    {opacity:calc(.14 + var(--notte,0) * .34);transform:scale(1.18)}
+}
+.lucine .alone{transform-box:fill-box;transform-origin:center}
+
+/* qualcuna fa i capricci, come nei giardini veri */
+.lucine .ballerina .vetro{animation:sfarfalla var(--fl,2.6s) steps(1,end) var(--d,0s) infinite}
+@keyframes sfarfalla{
+  0%,58%,64%,72%,100%{opacity:calc(.55 + var(--notte,0) * .45);filter:drop-shadow(0 0 calc(4px + var(--notte,0) * 13px) var(--c))}
+  60%,68%            {opacity:calc(.16 + var(--notte,0) * .12);filter:drop-shadow(0 0 1px var(--c))}
+}
 
 /* velatura ai bordi: cresce di notte, tiene su il contrasto del testo */
 .vignetta{
@@ -875,19 +927,31 @@ document.querySelectorAll(".rv").forEach((el, i) => {
       }
     }
 
+    const caso = (a, b) => a + Math.random() * (b - a);
+
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     svg.setAttribute("preserveAspectRatio", "none");
     svg.innerHTML = `
       <path class="filo" d="${filo}"/>
       ${bulbi.map(([x, y], i) => {
         const c = COLORI[i % COLORI.length];
+        const cx = x.toFixed(1), cy = (y + 12).toFixed(1);
+        const ballerina = i % 7 === 3;              // una ogni tanto sfarfalla
         return `
-          <g class="bulbo" style="animation-delay:${(i * .27).toFixed(2)}s">
-            <line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x.toFixed(1)}" y2="${(y + 7).toFixed(1)}"
+          <g class="bulbo ${ballerina ? "ballerina" : ""}" style="
+               transform-origin:${cx}px ${y.toFixed(1)}px;
+               --c:${c};
+               --d:${caso(0, 3.4).toFixed(2)}s;
+               --tw:${caso(2.4, 4.6).toFixed(2)}s;
+               --sw:${caso(3.6, 6.4).toFixed(2)}s;
+               --sw-a:${caso(2.2, 5).toFixed(1)}deg;
+               --fl:${caso(2.2, 3.6).toFixed(2)}s;">
+            <line x1="${cx}" y1="${y.toFixed(1)}" x2="${cx}" y2="${(y + 7).toFixed(1)}"
                   stroke="rgba(40,18,6,.5)" stroke-width="1.4"/>
-            <circle cx="${x.toFixed(1)}" cy="${(y + 12).toFixed(1)}" r="5" fill="${c}"
-                    style="opacity:calc(.45 + var(--notte, 0) * .55);
-                           filter:drop-shadow(0 0 calc(3px + var(--notte,0) * 9px) ${c})"/>
+            <circle class="alone" cx="${cx}" cy="${cy}" r="11"/>
+            <circle class="vetro" cx="${cx}" cy="${cy}" r="5"/>
+            <circle cx="${(x - 1.6).toFixed(1)}" cy="${(y + 10.2).toFixed(1)}" r="1.4"
+                    fill="#fff" opacity=".5"/>
           </g>`;
       }).join("")}`;
   }

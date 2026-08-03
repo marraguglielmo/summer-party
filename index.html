@@ -337,46 +337,54 @@ main{position:relative;z-index:2}
 /* ogni bulbo pendola attorno al suo punto di aggancio */
 .lucine .bulbo{
   transform-box:view-box;
-  animation:pendola var(--sw,5s) ease-in-out var(--d,0s) infinite alternate;
+  animation:pendola var(--sw,5s) ease-in-out var(--swd,0s) infinite alternate both;
 }
 @keyframes pendola{
   from{transform:rotate(calc(var(--sw-a,4deg) * -1))}
   to  {transform:rotate(var(--sw-a,4deg))}
 }
 
-/* il vetro respira: opacità e alone crescono e calano */
+/* --- riposo: è così che le lucine stanno quasi sempre --- */
 .lucine .vetro{
   fill:var(--c);
-  animation:brilla var(--tw,3.4s) ease-in-out var(--d,0s) infinite;
+  opacity:calc(.26 + var(--notte,0) * .36);
+  filter:drop-shadow(0 0 calc(1.5px + var(--notte,0) * 3.5px) var(--c));
+  /* backwards: durante il ritardo resta a riposo, niente lampada accesa al volo */
+  animation:brilla var(--tw,7s) ease-in-out var(--d,0s) infinite backwards;
 }
+/* ...e ogni tanto una vampata di bagliore, breve */
 @keyframes brilla{
-  0%,100%{
-    opacity:calc(.30 + var(--notte,0) * .40);
-    filter:drop-shadow(0 0 calc(2px + var(--notte,0) * 5px) var(--c));
+  0%,58%,100%{
+    opacity:calc(.26 + var(--notte,0) * .36);
+    filter:drop-shadow(0 0 calc(1.5px + var(--notte,0) * 3.5px) var(--c));
   }
-  45%{
-    opacity:calc(.58 + var(--notte,0) * .42);
-    filter:drop-shadow(0 0 calc(5px + var(--notte,0) * 15px) var(--c));
+  74%{
+    opacity:calc(.62 + var(--notte,0) * .38);
+    filter:drop-shadow(0 0 calc(6px + var(--notte,0) * 16px) var(--c));
   }
 }
 
-/* alone morbido dietro al vetro */
+/* alone morbido dietro al vetro, segue la stessa vampata */
 .lucine .alone{
   fill:var(--c);
   filter:blur(5px);
-  animation:alone var(--tw,3.4s) ease-in-out var(--d,0s) infinite;
+  transform-box:fill-box;transform-origin:center;
+  opacity:calc(.03 + var(--notte,0) * .10);
+  animation:alone var(--tw,7s) ease-in-out var(--d,0s) infinite backwards;
 }
 @keyframes alone{
-  0%,100%{opacity:calc(.06 + var(--notte,0) * .16);transform:scale(.85)}
-  45%    {opacity:calc(.14 + var(--notte,0) * .34);transform:scale(1.18)}
+  0%,58%,100%{opacity:calc(.03 + var(--notte,0) * .10);transform:scale(.78)}
+  74%        {opacity:calc(.13 + var(--notte,0) * .30);transform:scale(1.25)}
 }
-.lucine .alone{transform-box:fill-box;transform-origin:center}
 
 /* qualcuna fa i capricci, come nei giardini veri */
-.lucine .ballerina .vetro{animation:sfarfalla var(--fl,2.6s) steps(1,end) var(--d,0s) infinite}
+.lucine .ballerina .vetro{
+  animation:sfarfalla var(--fl,9s) steps(1,end) var(--d,0s) infinite backwards;
+}
 @keyframes sfarfalla{
-  0%,58%,64%,72%,100%{opacity:calc(.55 + var(--notte,0) * .45);filter:drop-shadow(0 0 calc(4px + var(--notte,0) * 13px) var(--c))}
-  60%,68%            {opacity:calc(.16 + var(--notte,0) * .12);filter:drop-shadow(0 0 1px var(--c))}
+  0%,63%,100%    {opacity:calc(.26 + var(--notte,0) * .36);filter:drop-shadow(0 0 calc(1.5px + var(--notte,0) * 3.5px) var(--c))}
+  66%,70%,76%    {opacity:calc(.62 + var(--notte,0) * .38);filter:drop-shadow(0 0 calc(6px + var(--notte,0) * 16px) var(--c))}
+  68%,73%        {opacity:calc(.14 + var(--notte,0) * .10);filter:drop-shadow(0 0 1px var(--c))}
 }
 
 /* velatura ai bordi: cresce di notte, tiene su il contrasto del testo */
@@ -951,17 +959,18 @@ document.querySelectorAll(".rv").forEach((el, i) => {
           <g class="bulbo ${ballerina ? "ballerina" : ""}" style="
                transform-origin:${cx}px ${y.toFixed(1)}px;
                --c:${c};
-               --d:${caso(0, 3.4).toFixed(2)}s;
-               --tw:${caso(2.4, 4.6).toFixed(2)}s;
+               --d:${caso(.6, 7).toFixed(2)}s;
+               --tw:${caso(6, 10).toFixed(2)}s;
                --sw:${caso(3.6, 6.4).toFixed(2)}s;
+               --swd:-${caso(0, 6).toFixed(2)}s;
                --sw-a:${caso(2.2, 5).toFixed(1)}deg;
-               --fl:${caso(2.2, 3.6).toFixed(2)}s;">
+               --fl:${caso(8, 13).toFixed(2)}s;">
             <line x1="${cx}" y1="${y.toFixed(1)}" x2="${cx}" y2="${(y + 7).toFixed(1)}"
                   stroke="rgba(40,18,6,.5)" stroke-width="1.4"/>
             <circle class="alone" cx="${cx}" cy="${cy}" r="11"/>
             <circle class="vetro" cx="${cx}" cy="${cy}" r="5"/>
             <circle cx="${(x - 1.6).toFixed(1)}" cy="${(y + 10.2).toFixed(1)}" r="1.4"
-                    fill="#fff" opacity=".5"/>
+                    fill="#fff" style="opacity:calc(.18 + var(--notte,0) * .3)"/>
           </g>`;
       }).join("")}`;
   }

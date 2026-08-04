@@ -365,6 +365,28 @@ main{position:relative;z-index:2}
   width:min(30vmin,260px);aspect-ratio:1;
   background:radial-gradient(circle,#fff6d4 0 30%,#ffd25f 48%,rgba(255,164,64,.5) 66%,rgba(255,150,60,0) 76%);
   filter:blur(.4px);
+  /* più scende, più si gonfia: è l'aria bassa che lo ingrandisce */
+  transform:translate(-50%,-50%) scale(calc(1 + var(--calore,0) * .3));
+}
+/* strato caldo che si accende solo vicino all'orizzonte */
+.sole::after{
+  content:"";position:absolute;inset:-8%;border-radius:50%;
+  background:radial-gradient(circle,#ffbe63 0 32%,#ff7f3c 52%,rgba(255,92,50,.4) 68%,transparent 78%);
+  opacity:var(--calore,0);
+}
+
+/* la foschia bassa dove il sole sprofonda e da cui poi risale */
+.foschia{
+  position:absolute;left:0;right:0;bottom:0;height:26vh;
+  background:linear-gradient(180deg,transparent 0%,var(--ground) 42%,var(--ground) 100%);
+}
+/* alone che resta sopra la foschia, e segue il punto in cui il sole scende */
+.bagliore{
+  position:absolute;left:0;right:0;bottom:0;height:52vh;
+  opacity:calc(var(--calore,0) * .9);
+  background:radial-gradient(55vw 30vh at var(--sole-x,50%) 100%,
+    rgba(255,178,92,.8) 0%,rgba(255,120,60,.28) 46%,transparent 74%);
+  mix-blend-mode:screen;
 }
 .luna{
   width:min(15vmin,130px);aspect-ratio:1;
@@ -573,6 +595,10 @@ main{position:relative;z-index:2}
 
   <div class="astro sole" id="sole"></div>
   <div class="astro luna" id="luna"></div>
+
+  <!-- dopo gli astri: li copre quando scendono sotto l'orizzonte -->
+  <div class="foschia"></div>
+  <div class="bagliore"></div>
 </div>
 
 <svg class="lucine" id="lucine" aria-hidden="true"></svg>
@@ -960,19 +986,27 @@ function aggiornaCielo(){
 }
 
 /* --- astri, notte e riflesso sul mare --- */
+/* il sole cala fino a sparire dietro la foschia, poi risale dall'altra parte */
 const solePunti = [
-  { t:0.00, x:76, y:14, o:1 },
-  { t:0.30, x:64, y:40, o:1 },
-  { t:0.44, x:57, y:55, o:.9 },
-  { t:0.52, x:53, y:62, o:0 },
-  { t:0.84, x:30, y:70, o:0 },   // ricompare all'alba, dall'altra parte
-  { t:1.00, x:22, y:47, o:1 }
+  { t:0.00, x:78, y:12, o:1 },
+  { t:0.26, x:68, y:36, o:1 },
+  { t:0.42, x:59, y:60, o:1 },
+  { t:0.52, x:53, y:80, o:1 },   // tocca l'orizzonte
+  { t:0.60, x:49, y:98, o:1 },   // sprofonda
+  { t:0.66, x:46, y:112, o:0 },
+  { t:0.80, x:26, y:112, o:0 },  // sotto, dall'altra parte
+  { t:0.87, x:24, y:96, o:1 },   // riaffiora: è l'alba
+  { t:0.94, x:22, y:78, o:1 },
+  { t:1.00, x:20, y:58, o:1 }
 ];
+/* la luna fa l'arco opposto: sale mentre il sole se n'è andato */
 const lunaPunti = [
-  { t:0.46, x:24, y:66, o:0 },
-  { t:0.62, x:31, y:30, o:1 },
-  { t:0.82, x:42, y:18, o:.9 },
-  { t:0.95, x:52, y:26, o:0 }
+  { t:0.50, x:26, y:96, o:0 },
+  { t:0.57, x:28, y:78, o:.9 },
+  { t:0.68, x:34, y:34, o:1 },
+  { t:0.82, x:44, y:16, o:1 },
+  { t:0.92, x:56, y:40, o:.55 },
+  { t:1.00, x:64, y:88, o:0 }
 ];
 const nottePunti = [
   { t:0.00, v:0 }, { t:0.42, v:0 }, { t:0.70, v:1 }, { t:0.86, v:.45 }, { t:1.00, v:.05 }
@@ -1001,11 +1035,19 @@ function piazza(el, punti, p){
 }
 
 function scena(p){
-  piazza(soleEl, solePunti, p);
+  const sole = piazza(soleEl, solePunti, p);
   piazza(lunaEl, lunaPunti, p);
 
+  /* quanto è basso il sole: 0 alto nel cielo, 1 appoggiato all'orizzonte.
+     Serve sia al tramonto sia all'alba, perché guarda solo l'altezza. */
+  const basso = Math.min(1, Math.max(0, (sole.y - 34) / 46));
+  const calore = basso * sole.o;      // sotto l'orizzonte non scalda più nessuno
+  const root = document.documentElement.style;
+  root.setProperty("--calore", calore.toFixed(3));
+  root.setProperty("--sole-x", sole.x.toFixed(1) + "%");
+
   const notte = interpola(nottePunti, p, ["v"]).v;
-  document.documentElement.style.setProperty("--notte", notte.toFixed(3));
+  root.setProperty("--notte", notte.toFixed(3));
 }
 
 /* =========================================================

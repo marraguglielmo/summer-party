@@ -712,7 +712,7 @@ const CONFIG = {
   /* quota: link PayPal. Se lo cambi, va rifatto anche il QR (#qr-paypal). */
   paypalUrl:   "https://www.paypal.me/Ceceeeeeeeeeeee",
   quotaTitolo: "La tua parte",
-  quotaNota:   "Manda il tuo contributo con PayPal, prima o dopo la serata. Link o codice, come preferisci.",
+  quotaNota:   "Paga la tua quota con PayPal. Inquadra o clicca.",
   dressNota: "Scarpe comode: a un certo punto si finisce sulla sabbia.",
 
   programma: [
@@ -751,7 +751,9 @@ const menoMoto = matchMedia("(prefers-reduced-motion: reduce)").matches;
    ========================================================= */
 $("#hEyebrow").textContent = CONFIG.eyebrow;
 $("#hData").textContent = CONFIG.dataLabel;
-$("#hSub").textContent = CONFIG.dataSub;
+/* campi facoltativi: se mancano, l'elemento sparisce invece di stampare "undefined" */
+if (CONFIG.dataSub) $("#hSub").textContent = CONFIG.dataSub;
+else $("#hSub").remove();
 document.title = `${CONFIG.titolo1} ${CONFIG.titolo2} — ${CONFIG.dataLabel}, ${CONFIG.luogo}`;
 
 $("#hTitle").innerHTML = [CONFIG.titolo1, CONFIG.titolo2].map((riga, r) => {
@@ -842,7 +844,7 @@ $("#infoGrid").innerHTML = `
   <div class="card">
     <span class="card-lab">Luogo</span>
     <span class="card-val">${esc(CONFIG.luogo)}</span>
-    <p>${esc(CONFIG.indirizzo)}</p>
+    ${CONFIG.indirizzo ? `<p>${esc(CONFIG.indirizzo)}</p>` : ""}
     <a class="maplink" href="${linkMappa}" target="_blank" rel="noopener">Apri le indicazioni</a>
   </div>
   <div class="card">

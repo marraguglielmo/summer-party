@@ -123,9 +123,18 @@ main{position:relative;z-index:2}
   display:inline-block;
   transform:translateY(1.05em) rotate(6deg);
   opacity:0;
-  animation:letterIn .95s cubic-bezier(.2,.8,.2,1) forwards;
+  will-change:transform;
+  /* entra dal basso, poi resta viva: un'onda lenta lettera per lettera */
+  animation:
+    letterIn .95s cubic-bezier(.2,.8,.2,1) var(--dl,0s) forwards,
+    ondeggia 5s ease-in-out var(--wd,1.5s) infinite;
 }
 @keyframes letterIn{to{transform:none;opacity:1}}
+@keyframes ondeggia{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  32%    {transform:translateY(-.042em) rotate(-.9deg)}
+  66%    {transform:translateY(.026em)  rotate(.6deg)}
+}
 
 /* data in evidenza, fra due filetti come sulla locandina */
 .date-band{
@@ -746,9 +755,11 @@ $("#hSub").textContent = CONFIG.dataSub;
 document.title = `${CONFIG.titolo1} ${CONFIG.titolo2} — ${CONFIG.dataLabel}, ${CONFIG.luogo}`;
 
 $("#hTitle").innerHTML = [CONFIG.titolo1, CONFIG.titolo2].map((riga, r) => {
-  const lettere = [...riga].map((ch, i) =>
-    `<span class="ch" style="animation-delay:${(r * 0.24 + i * 0.045 + 0.1).toFixed(3)}s">${esc(ch)}</span>`
-  ).join("");
+  const lettere = [...riga].map((ch, i) => {
+    const dl = r * 0.24 + i * 0.045 + 0.1;        // entrata
+    const wd = dl + 1.2 + i * 0.12 + r * 0.3;     // l'onda parte dopo, e attraversa la parola
+    return `<span class="ch" style="--dl:${dl.toFixed(3)}s;--wd:${wd.toFixed(3)}s">${esc(ch)}</span>`;
+  }).join("");
   return `<span class="row">${lettere}</span>`;
 }).join("");
 

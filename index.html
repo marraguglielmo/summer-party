@@ -744,6 +744,8 @@ const $ = (s, r = document) => r.querySelector(s);
 const inizio = new Date(CONFIG.inizioISO);
 const fine   = new Date(CONFIG.fineISO);
 const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* per i testi lunghi: \n nel CONFIG diventa un a capo vero */
+const testo = (s) => esc(s).replace(/\n/g, "<br>");
 const menoMoto = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* =========================================================
@@ -822,7 +824,7 @@ $("#programma").innerHTML = tappe.map(p => `
       <span class="step-ora">${esc(p.ora)}</span>
       <span class="step-nome">${esc(p.nome)}</span>
     </p>
-    ${p.nota ? `<p class="step-nota">${esc(p.nota)}</p>` : ""}
+    ${p.nota ? `<p class="step-nota">${testo(p.nota)}</p>` : ""}
   </div>`).join("");
 
 // le tappe già passate durante la serata sbiadiscono
@@ -844,13 +846,13 @@ $("#infoGrid").innerHTML = `
   <div class="card">
     <span class="card-lab">Luogo</span>
     <span class="card-val">${esc(CONFIG.luogo)}</span>
-    ${CONFIG.indirizzo ? `<p>${esc(CONFIG.indirizzo)}</p>` : ""}
+    ${CONFIG.indirizzo ? `<p>${testo(CONFIG.indirizzo)}</p>` : ""}
     <a class="maplink" href="${linkMappa}" target="_blank" rel="noopener">Apri le indicazioni</a>
   </div>
   <div class="card">
     <span class="card-lab">Dress code</span>
     <span class="card-val">${esc(CONFIG.dressCode)}</span>
-    <p>${esc(CONFIG.dressNota)}</p>
+    <p>${testo(CONFIG.dressNota)}</p>
   </div>`;
 
 $("#contattoGrid").innerHTML = `
@@ -869,7 +871,7 @@ if (!CONFIG.paypalUrl){
     <div class="card quota">
       <span class="card-lab">Quota</span>
       <span class="card-val">${esc(CONFIG.quotaTitolo)}</span>
-      <p>${esc(CONFIG.quotaNota)}</p>
+      <p>${testo(CONFIG.quotaNota)}</p>
       <a class="maplink" href="${esc(CONFIG.paypalUrl)}" target="_blank" rel="noopener">Paga qui</a>
       <figure class="qr-box">
         <a href="${esc(CONFIG.paypalUrl)}" target="_blank" rel="noopener" aria-label="Apri PayPal">
@@ -888,7 +890,7 @@ if (!CONFIG.extra.length){
     <div class="card slot ${x.bozza ? "draft" : ""}">
       <span class="card-lab">${esc(x.etichetta)}</span>
       <span class="card-val">${esc(x.titolo)}</span>
-      <p>${esc(x.testo)}</p>
+      <p>${testo(x.testo)}</p>
       ${x.ctaUrl ? `<p><a href="${esc(x.ctaUrl)}" target="_blank" rel="noopener">${esc(x.ctaLabel || "Apri")}</a></p>` : ""}
     </div>`).join("");
 }
